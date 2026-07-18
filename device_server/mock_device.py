@@ -24,7 +24,7 @@ device_state = {
     "battery_pct" : 87,
     "temp_celsius" : 24.5,
     "firmware_version" : "2.3.1",
-    "boot_cout" : 1,
+    "boot_count" : 1,
     "is_rebooting" : False 
 }
 
@@ -86,13 +86,13 @@ def reboot():
 
 @app.route("/reset", methods=["POST"])
 def reset_device():
-    device_state = {
-        "battery_pct" : 87,
-        "temp_celsius" : 24.5,
-        "firmware_version" : "2.3.1",
-        "boot_count" : 1,
-        "is_rebooting" : False 
-    }
+    device_state.update({
+        "battery_pct": 87,
+        "temp_celsius": 24.5,
+        "firmware_version": "2.3.1",
+        "boot_count": 1,
+        "is_rebooting": False,
+    })
 
     return jsonify({"state": "reset"})
 
