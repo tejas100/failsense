@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>FailSense Triage Report</title>
+<style>
+    body {
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        background: #f9fafb;
+        color: #111827;
+        max-width: 900px;
+        margin: 40px auto;
+        padding: 0 20px;
+    }
+    h1 { font-size: 24px; margin-bottom: 4px; }
+    .subtitle { color: #6b7280; margin-bottom: 32px; font-size: 14px; }
+    .stats-row { display: flex; gap: 16px; margin-bottom: 32px; }
+    .stat-box {
+        flex: 1;
+        background: white;
+        border: 1px solid #e5e7eb;
+        border-radius: 8px;
+        padding: 16px;
+        text-align: center;
+    }
+    .stat-number { font-size: 28px; font-weight: 700; }
+    .stat-label { font-size: 12px; color: #6b7280; text-transform: uppercase; }
+    .category-bar { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
+    .category-label { width: 220px; font-size: 13px; }
+    .bar-track { flex: 1; background: #e5e7eb; border-radius: 4px; height: 20px; overflow: hidden; }
+    .bar-fill { height: 100%; }
+    .category-count { width: 90px; font-size: 13px; color: #6b7280; }
+    .card {
+        background: white;
+        border: 1px solid #e5e7eb;
+        border-radius: 8px;
+        padding: 16px;
+        margin-bottom: 16px;
+    }
+    .card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+    .badge { color: white; font-size: 11px; font-weight: 600; padding: 4px 10px; border-radius: 12px; }
+    .confidence { font-size: 12px; color: #6b7280; }
+    .card-title { font-family: monospace; font-size: 13px; font-weight: 600; margin-bottom: 6px; }
+    .card-reason { font-size: 13px; color: #374151; margin-bottom: 10px; }
+    .card-message {
+        background: #1f2937;
+        color: #f3f4f6;
+        padding: 10px;
+        border-radius: 6px;
+        font-size: 12px;
+        overflow-x: auto;
+        white-space: pre-wrap;
+    }
+    section { margin-bottom: 32px; }
+    h2 { font-size: 16px; margin-bottom: 16px; }
+</style>
+</head>
+<body>
+    <h1>FailSense Triage Report</h1>
+    <div class="subtitle">Generated 2026-07-19 12:22:55</div>
+
+    <div class="stats-row">
+        <div class="stat-box">
+            <div class="stat-number">10</div>
+            <div class="stat-label">Total Tests</div>
+        </div>
+        <div class="stat-box">
+            <div class="stat-number">2</div>
+            <div class="stat-label">Failed</div>
+        </div>
+        <div class="stat-box">
+            <div class="stat-number">80.0%</div>
+            <div class="stat-label">Pass Rate</div>
+        </div>
+    </div>
+
+    <section>
+        <h2>Failure Breakdown</h2>
+        
+        <div class="category-bar">
+            <div class="category-label">Product Defect</div>
+            <div class="bar-track">
+                <div class="bar-fill" style="width: 50.0%; background: #dc2626;"></div>
+            </div>
+            <div class="category-count">1 (50.0%)</div>
+        </div>
+        <div class="category-bar">
+            <div class="category-label">Possible Test Bug (needs review)</div>
+            <div class="bar-track">
+                <div class="bar-fill" style="width: 50.0%; background: #7c3aed;"></div>
+            </div>
+            <div class="category-count">1 (50.0%)</div>
+        </div>
+    </section>
+
+    <section>
+        <h2>Details</h2>
+        
+        <div class="card" style="border-left: 4px solid #dc2626;">
+            <div class="card-header">
+                <span class="badge" style="background: #dc2626;">Product Defect</span>
+                <span class="confidence">confidence: medium</span>
+            </div>
+            <div class="card-title">tests/test_regression.py::test_temp_sensor_under_extreme_heat</div>
+            <div class="card-reason">Failure compares device-reported status strings - suggests the device returned an unexpected state.</div>
+            <pre class="card-message">AssertionError: assert 'error' == 'ok'
+  
+  - ok
+  + error</pre>
+        </div>
+        <div class="card" style="border-left: 4px solid #7c3aed;">
+            <div class="card-header">
+                <span class="badge" style="background: #7c3aed;">Possible Test Bug (needs review)</span>
+                <span class="confidence">confidence: low</span>
+            </div>
+            <div class="card-title">tests/test_regression.py::test_reboot_increments_boot_count_badly</div>
+            <div class="card-reason">Failure compares bare numeric values with no clear device-status signature - could be a real defect or an incorrect test expectation. Needs human review.</div>
+            <pre class="card-message">assert 2 == 5</pre>
+        </div>
+    </section>
+</body>
+</html>
