@@ -1,0 +1,25 @@
+{
+  "total_tests": 10,
+  "total_failed": 2,
+  "pass_rate": 80.0,
+  "category_counts": {
+    "PRODUCT_DEFECT": 1,
+    "POSSIBLE_TEST_BUG": 1
+  },
+  "classifications": [
+    {
+      "nodeid": "tests/test_regression.py::test_temp_sensor_under_extreme_heat",
+      "category": "PRODUCT_DEFECT",
+      "confidence": "medium",
+      "reason": "Failure compares device-reported status strings - suggests the device returned an unexpected state.",
+      "message": "AssertionError: assert 'error' == 'ok'\n  \n  - ok\n  + error"
+    },
+    {
+      "nodeid": "tests/test_regression.py::test_reboot_increments_boot_count_badly",
+      "category": "POSSIBLE_TEST_BUG",
+      "confidence": "low",
+      "reason": "Failure compares bare numeric values with no clear device-status signature - could be a real defect or an incorrect test expectation. Needs human review.",
+      "message": "assert 2 == 5"
+    }
+  ]
+}
