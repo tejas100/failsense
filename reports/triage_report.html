@@ -53,11 +53,35 @@
     }
     section { margin-bottom: 32px; }
     h2 { font-size: 16px; margin-bottom: 16px; }
+    .llm-block {
+        margin-top: 12px;
+        padding: 12px;
+        background: #eff6ff;
+        border: 1px solid #bfdbfe;
+        border-radius: 6px;
+    }
+    .llm-header {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 6px;
+        flex-wrap: wrap;
+    }
+    .llm-tag {
+        font-size: 11px;
+        font-weight: 700;
+        color: #1d4ed8;
+        text-transform: uppercase;
+        letter-spacing: 0.03em;
+    }
+    .llm-reasoning { font-size: 13px; color: #1e3a8a; }
+    .llm-skipped { background: #f9fafb; border-color: #e5e7eb; }
+    .llm-skip-note { font-size: 12px; color: #6b7280; }
 </style>
 </head>
 <body>
     <h1>FailSense Triage Report</h1>
-    <div class="subtitle">Generated 2026-07-19 12:22:55</div>
+    <div class="subtitle">Generated 2026-07-19 19:23:37</div>
 
     <div class="stats-row">
         <div class="stat-box">
@@ -107,6 +131,7 @@
   
   - ok
   + error</pre>
+            
         </div>
         <div class="card" style="border-left: 4px solid #7c3aed;">
             <div class="card-header">
@@ -116,6 +141,15 @@
             <div class="card-title">tests/test_regression.py::test_reboot_increments_boot_count_badly</div>
             <div class="card-reason">Failure compares bare numeric values with no clear device-status signature - could be a real defect or an incorrect test expectation. Needs human review.</div>
             <pre class="card-message">assert 2 == 5</pre>
+            
+            <div class="llm-block">
+                <div class="llm-header">
+                    <span class="llm-tag">LLM Review (GPT-4o Mini)</span>
+                    <span class="badge" style="background: #2563eb;">Test Infra Bug</span>
+                    <span class="confidence">confidence: high</span>
+                </div>
+                <div class="llm-reasoning">The assertion compares an expected value of 2 to an actual value of 5, which indicates a likely issue with the test setup or the expected outcome rather than a problem with the underlying product behavior.</div>
+            </div>
         </div>
     </section>
 </body>

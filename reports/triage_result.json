@@ -19,7 +19,11 @@
       "category": "POSSIBLE_TEST_BUG",
       "confidence": "low",
       "reason": "Failure compares bare numeric values with no clear device-status signature - could be a real defect or an incorrect test expectation. Needs human review.",
-      "message": "assert 2 == 5"
+      "message": "assert 2 == 5",
+      "llm_escalated": true,
+      "llm_category": "TEST_INFRA_BUG",
+      "llm_confidence": "high",
+      "llm_reasoning": "The assertion compares an expected value of 2 to an actual value of 5, which indicates a likely issue with the test setup or the expected outcome rather than a problem with the underlying product behavior."
     }
   ]
 }

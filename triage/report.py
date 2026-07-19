@@ -23,6 +23,7 @@ CATEGORY_COLORS = {
     "FLAKY_ENVIRONMENT": "#d97706",   # amber
     "PRODUCT_DEFECT": "#dc2626",      # red
     "POSSIBLE_TEST_BUG": "#7c3aed",   # purple
+    "TEST_INFRA_BUG": "#2563eb",      # blue - LLM's more specific label
     "UNCLASSIFIED": "#6b7280",        # gray
 }
 
@@ -30,6 +31,7 @@ CATEGORY_LABELS = {
     "FLAKY_ENVIRONMENT": "Flaky / Environment",
     "PRODUCT_DEFECT": "Product Defect",
     "POSSIBLE_TEST_BUG": "Possible Test Bug (needs review)",
+    "TEST_INFRA_BUG": "Test Infra Bug",
     "UNCLASSIFIED": "Unclassified (needs manual triage)",
 }
 
@@ -55,6 +57,27 @@ def render_html(result):
     for c in result["classifications"]:
         color = CATEGORY_COLORS.get(c["category"], "#6b7280")
         label = CATEGORY_LABELS.get(c["category"], c["category"])
+
+        llm_block = ""
+        if c.get("llm_escalated"):
+            llm_color = CATEGORY_COLORS.get(c["llm_category"], "#2563eb")
+            llm_label = CATEGORY_LABELS.get(c["llm_category"], c["llm_category"])
+            llm_block = f"""
+            <div class="llm-block">
+                <div class="llm-header">
+                    <span class="llm-tag">LLM Review (GPT-4o Mini)</span>
+                    <span class="badge" style="background: {llm_color};">{llm_label}</span>
+                    <span class="confidence">confidence: {c['llm_confidence']}</span>
+                </div>
+                <div class="llm-reasoning">{c['llm_reasoning']}</div>
+            </div>"""
+        elif c.get("llm_note"):
+            llm_block = f"""
+            <div class="llm-block llm-skipped">
+                <span class="llm-tag">LLM Review skipped</span>
+                <span class="llm-skip-note">{c['llm_note']}</span>
+            </div>"""
+
         detail_cards += f"""
         <div class="card" style="border-left: 4px solid {color};">
             <div class="card-header">
@@ -64,6 +87,7 @@ def render_html(result):
             <div class="card-title">{c['nodeid']}</div>
             <div class="card-reason">{c['reason']}</div>
             <pre class="card-message">{c['message']}</pre>
+            {llm_block}
         </div>"""
 
     return f"""<!DOCTYPE html>
@@ -121,6 +145,30 @@ def render_html(result):
     }}
     section {{ margin-bottom: 32px; }}
     h2 {{ font-size: 16px; margin-bottom: 16px; }}
+    .llm-block {{
+        margin-top: 12px;
+        padding: 12px;
+        background: #eff6ff;
+        border: 1px solid #bfdbfe;
+        border-radius: 6px;
+    }}
+    .llm-header {{
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 6px;
+        flex-wrap: wrap;
+    }}
+    .llm-tag {{
+        font-size: 11px;
+        font-weight: 700;
+        color: #1d4ed8;
+        text-transform: uppercase;
+        letter-spacing: 0.03em;
+    }}
+    .llm-reasoning {{ font-size: 13px; color: #1e3a8a; }}
+    .llm-skipped {{ background: #f9fafb; border-color: #e5e7eb; }}
+    .llm-skip-note {{ font-size: 12px; color: #6b7280; }}
 </style>
 </head>
 <body>

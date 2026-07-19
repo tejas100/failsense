@@ -34,6 +34,7 @@ import re
 import sys
 from pathlib import Path
 from collections import Counter
+from triage.llm_classify import maybe_escalate_to_llm
 
 
 ANSI_ESCAPE = re.compile(r"\x1b\[[0-9;]*m")
@@ -118,7 +119,7 @@ def triage_report(report_path):
     tests = report.get("tests", [])
 
     failed_tests = [t for t in tests if t["outcome"] == "failed"]
-    classifications = [classify_test(t) for t in failed_tests]
+    classifications = [maybe_escalate_to_llm(classify_test(t)) for t in failed_tests]
 
     summary = Counter(c["category"] for c in classifications)
     total = report["summary"].get("total", len(tests))
@@ -159,6 +160,11 @@ if __name__ == "__main__":
         print(f"[{c['category']}] ({c['confidence']} confidence) {c['nodeid']}")
         print(f"  Reason: {c['reason']}")
         print(f"  Message: {c['message'][:100]}")
+        if c.get("llm_escalated"):
+            print(f"  LLM review: {c['llm_category']} ({c['llm_confidence']} confidence)")
+            print(f"  LLM reasoning: {c['llm_reasoning']}")
+        elif "llm_note" in c:
+            print(f"  LLM: {c['llm_note']}")
         print()
 
     # Also write a machine-readable copy for the HTML report step next
