@@ -67,6 +67,10 @@ def classify_test(test):
         }
     
 
+    
+
+
+
     # Tier 2: heuristic on the assertion message shape
     # Pattern: comparing two quoted strings, e.g. assert 'error' == 'ok'
     # This shape usually means we compared a DEVICE-REPORTED STATUS field
@@ -98,8 +102,8 @@ def classify_test(test):
             "nodeid": nodeid,
             "category": "POSSIBLE_TEST_BUG",
             "confidence": "low",
-            "reason": "Failure compares bare numeric values with no clear "
-                      "device-status signature - could be a real defect or "
+            "reason": "Failure compares bare numeric values with no clear " 
+                      "device-status signature - could be a real defect or " 
                       "an incorrect test expectation. Needs human review.",
             "message": crash_message,
         }
